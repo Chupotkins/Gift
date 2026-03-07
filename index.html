@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>С 8 Марта, девочки!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-1: #f7e6ff;
+      --bg-2: #fdf2ff;
+      --accent: #ff7ec7;
+      --accent-dark: #ff4fa8;
+      --text: #3b2c3f;
+      --muted: #7a6c83;
+      --card: rgba(255, 255, 255, 0.75);
+      --glass: rgba(255, 255, 255, 0.45);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Manrope', 'Comfortaa', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, #ffe0ff 0, #ffe0ff 15%, transparent 40%),
+                  radial-gradient(circle at 80% 10%, #d7f1ff 0, #d7f1ff 20%, transparent 50%),
+                  radial-gradient(circle at 50% 80%, #ffe8d6 0, #ffe8d6 20%, transparent 50%),
+                  linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      overflow-x: hidden;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 64px 24px 96px;
+      isolation: isolate;
+    }
+
+    .background-words {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+      opacity: 0.32;
+      filter: blur(0.2px);
+    }
+
+    .background-words span {
+      position: absolute;
+      font-size: clamp(26px, 5vw, 46px);
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: lowercase;
+      animation: drift linear infinite;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    /* Random placement */
+    .background-words .w1 { left: 8%; top: 14%; animation-duration: 24s; }
+    .background-words .w2 { left: 60%; top: 10%; animation-duration: 30s; animation-delay: -6s; }
+    .background-words .w3 { left: 18%; top: 65%; animation-duration: 28s; animation-delay: -10s; }
+    .background-words .w4 { left: 72%; top: 60%; animation-duration: 32s; animation-delay: -3s; }
+    .background-words .w5 { left: 40%; top: 30%; animation-duration: 26s; animation-delay: -8s; }
+    .background-words .w6 { left: 82%; top: 34%; animation-duration: 22s; animation-delay: -12s; }
+    .background-words .w7 { left: 12%; top: 42%; animation-duration: 34s; animation-delay: -2s; }
+    .background-words .w8 { left: 55%; top: 74%; animation-duration: 29s; animation-delay: -15s; }
+
+    @keyframes drift {
+      0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0.35; }
+      50% { opacity: 0.55; }
+      100% { transform: translate3d(0, -60px, 0) rotate(-2deg); opacity: 0.35; }
+    }
+
+    .envelope-wrapper {
+      display: grid;
+      gap: 12px;
+      justify-items: center;
+      text-align: center;
+      z-index: 1;
+      cursor: pointer;
+      transition: transform 0.6s ease, filter 0.4s ease;
+      filter: drop-shadow(0 25px 40px rgba(0,0,0,0.08));
+    }
+
+    .envelope-wrapper:hover { transform: translateY(-6px) scale(1.01); }
+
+    .tap-hint {
+      margin: 0;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      opacity: 0.9;
+    }
+
+    .envelope {
+      position: relative;
+      width: min(320px, 72vw);
+      aspect-ratio: 4 / 3;
+      background: linear-gradient(135deg, #fff, #ffeafd);
+      border-radius: 18px;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform 0.9s ease;
+    }
+
+    .envelope::before,
+    .envelope::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(135deg,
+        rgba(255, 126, 199, 0.16) 0,
+        rgba(255, 126, 199, 0.16) 12px,
+        transparent 12px,
+        transparent 22px);
+      mix-blend-mode: multiply;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+
+    .envelope .flap {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #ffd5f6, #fff0fb);
+      clip-path: polygon(0 0, 100% 0, 50% 55%);
+      transform-origin: 50% 0%;
+      transition: transform 0.9s ease;
+      z-index: 2;
+    }
+
+    .envelope .body {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #fff7ff, #ffe1ff);
+      clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+      z-index: 1;
+    }
+
+    .envelope .letter {
+      position: absolute;
+      left: 50%;
+      top: 60%;
+      transform: translate(-50%, -50%);
+      width: 82%;
+      height: 62%;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 18px 35px rgba(0,0,0,0.08);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: clamp(24px, 5vw, 32px);
+      color: var(--accent-dark);
+      letter-spacing: 0.02em;
+      transition: transform 0.9s ease;
+    }
+
+    .envelope .shine {
+      position: absolute;
+      inset: 12px;
+      border-radius: 12px;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.4), rgba(255,255,255,0));
+      transform: translateX(-120%);
+      animation: shine 3s ease-in-out infinite;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    @keyframes shine {
+      0% { transform: translateX(-120%); }
+      50% { transform: translateX(20%); }
+      100% { transform: translateX(120%); }
+    }
+
+    .envelope-wrapper::after {
+      content: "";
+      width: 140px;
+      height: 140px;
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,126,199,0.35), rgba(255,126,199,0));
+      filter: blur(18px);
+      z-index: 0;
+      animation: pulse 3.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(0.95); opacity: 0.65; }
+      50% { transform: scale(1.08); opacity: 0.9; }
+    }
+
+    .video-card {
+      position: relative;
+      width: min(880px, 96vw);
+      margin-top: 32px;
+      padding: 24px;
+      background: var(--card);
+      border-radius: 24px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .video-card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .video-frame {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.15);
+      background: linear-gradient(145deg, #ffe9f8, #e7f6ff);
+    }
+
+    iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at center, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.05));
+      color: var(--accent-dark);
+      font-size: clamp(48px, 10vw, 80px);
+      cursor: pointer;
+      transition: background 0.3s ease, opacity 0.3s ease;
+      z-index: 2;
+    }
+
+    .play-overlay:hover { background: radial-gradient(circle at center, rgba(255,255,255,0.75), rgba(255,255,255,0.1)); }
+    .play-overlay.hidden { opacity: 0; pointer-events: none; }
+
+    button {
+      margin-top: 18px;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: #fff;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      box-shadow: 0 12px 25px rgba(255, 126, 199, 0.35);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    button:hover { transform: translateY(-2px); box-shadow: 0 16px 28px rgba(255,126,199,0.42); }
+    button:active { transform: translateY(1px); }
+
+    .wish {
+      margin-top: 14px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .wish.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .floating-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .floating-envelope {
+      position: absolute;
+      width: 46px;
+      height: 32px;
+      background: linear-gradient(135deg, #fff0fb, #ffe3f5);
+      border-radius: 10px;
+      box-shadow: 0 10px 18px rgba(0,0,0,0.12);
+      overflow: hidden;
+      pointer-events: auto;
+      cursor: pointer;
+      animation: glide var(--dur, 26s) linear infinite, bob 6s ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+      top: var(--y, 10%);
+      left: -16vw;
+      transform-origin: center;
+    }
+
+    .floating-envelope::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #ffd5f6, #ffeefd);
+      clip-path: polygon(0 0, 100% 0, 50% 62%);
+    }
+
+    .floating-envelope::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,126,199,0.22), rgba(255,126,199,0));
+      mix-blend-mode: multiply;
+    }
+
+    @keyframes glide {
+      0%   { left: -16vw; transform: rotate(-2deg); }
+      100% { left: 112vw; transform: rotate(3deg); }
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translateY(-4px) rotate(-1deg); }
+      50% { transform: translateY(6px) rotate(1deg); }
+    }
+
+    .burst-msg {
+      position: fixed;
+      padding: 10px 16px;
+      background: rgba(255,255,255,0.9);
+      color: var(--accent-dark);
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      font-weight: 700;
+      pointer-events: none;
+      animation: pop 1.5s ease forwards;
+      white-space: nowrap;
+      z-index: 5;
+    }
+
+    @keyframes pop {
+      0% { opacity: 0; transform: translate(-50%, -30%) scale(0.7); filter: blur(1px); }
+      20% { opacity: 1; transform: translate(-50%, -60%) scale(1); filter: blur(0); }
+      60% { opacity: 1; transform: translate(-50%, -100%) scale(1.03); }
+      100% { opacity: 0; transform: translate(-50%, -150%) scale(1.08); filter: blur(3px); }
+    }
+
+    @media (max-width: 640px) {
+      .video-card { padding: 18px; }
+      .tap-hint { font-size: 14px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding: 48px 18px 72px; }
+      .envelope { width: min(360px, 86vw); }
+      .video-card { padding: 16px; }
+      .wish { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-layer" id="floatingLayer" aria-hidden="false"></div>
+  <div class="background-words" aria-hidden="true">
+    <span class="w1">радости</span>
+    <span class="w2">вдохновения</span>
+    <span class="w3">улыбок</span>
+    <span class="w4">лёгкости</span>
+    <span class="w5">мечты</span>
+    <span class="w6">солнечности</span>
+    <span class="w7">гармонии</span>
+    <span class="w8">тепла</span>
+  </div>
+
+  <main class="hero">
+    <div class="envelope-wrapper" id="envelope" aria-label="Открыть поздравление">
+      <div class="envelope">
+        <div class="flap"></div>
+        <div class="body"></div>
+        <div class="letter">8 марта</div>
+        <div class="shine"></div>
+      </div>
+      <p class="tap-hint">Нажми, чтобы открыть</p>
+    </div>
+
+    <section class="video-card" id="videoCard" hidden>
+      <div class="video-frame">
+        <div class="play-overlay" id="playOverlay">▶</div>
+        <iframe id="greetVideo" title="Видео-поздравление" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <button id="wishBtn">Получить поздравление</button>
+      <div class="wish" id="wishText">Сегодня будет тёплое поздравление ♥</div>
+    </section>
+  </main>
+
+  <script>
+    // === Настройка: здесь поменяйте ссылку на готовое видео ===
+    const VIDEO_LINK = "https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1&rel=0";
+
+    // === Настройка: расширяйте массив поздравлений ниже ===
+    const WISHES = [
+      "Пусть каждый день будет таким же солнечным, как твоя улыбка!",
+      "Желаем лёгкости, вдохновения и бесконечных поводов радоваться.",
+      "Пусть рядом всегда будут люди, которые ценят и поддерживают тебя.",
+      "Мечты сбываются, когда их носишь в сердце — пусть сбудется самое главное!",
+      "Больше ярких путешествий, тёплых встреч и уютных вечеров.",
+      "Пусть этот год принесёт новые открытия и смелые свершения.",
+      "Ты делаешь мир красивее — оставайся такой же лучистой!",
+      "Счастья в мелочах, гармонии в душе и бесконечного вдохновения."
+    ];
+
+    // Короткие всплывающие подсказки от маленьких конвертиков
+    const MINI_WISHES = [
+      "Поздравляем!",
+      "С 8 Марта!",
+      "Ты чудесна!",
+      "Весны и улыбок!",
+      "Радости сегодня!",
+      "Ты лучшая!"
+    ];
+
+    const envelope = document.getElementById("envelope");
+    const videoCard = document.getElementById("videoCard");
+    const iframe = document.getElementById("greetVideo");
+    const playOverlay = document.getElementById("playOverlay");
+    const wishBtn = document.getElementById("wishBtn");
+    const wishText = document.getElementById("wishText");
+    const floatingLayer = document.getElementById("floatingLayer");
+
+    let videoLoaded = false;
+
+    function loadVideo(withSound = false) {
+      const autoplayParam = "&autoplay=1" + (withSound ? "&mute=0" : "&mute=1");
+      iframe.src = VIDEO_LINK + autoplayParam;
+      videoLoaded = true;
+      playOverlay.classList.add("hidden");
+    }
+
+    envelope.addEventListener("click", () => {
+      envelope.style.pointerEvents = "none";
+      envelope.querySelector(".flap").style.transform = "rotateX(-170deg)";
+      envelope.querySelector(".letter").style.transform = "translate(-50%, -85%)";
+
+      videoCard.hidden = false;
+      requestAnimationFrame(() => videoCard.classList.add("show"));
+      loadVideo(false);
+      setTimeout(() => {
+        envelope.style.opacity = "0.1";
+        envelope.style.transition = "opacity 0.8s ease";
+      }, 600);
+    });
+
+    playOverlay.addEventListener("click", () => {
+      if (!videoLoaded) {
+        loadVideo(true);
+      } else {
+        // If already loaded muted, reload with sound on user gesture
+        loadVideo(true);
+      }
+    });
+
+    wishBtn.addEventListener("click", () => {
+      const randomWish = WISHES[Math.floor(Math.random() * WISHES.length)];
+      wishText.textContent = randomWish;
+      wishText.classList.remove("visible");
+      // trigger reflow for animation restart
+      void wishText.offsetWidth;
+      wishText.classList.add("visible");
+    });
+
+    // --- Плавающие конвертики ---
+    function createFloatingEnvelopes(count = 8) {
+      for (let i = 0; i < count; i++) {
+        const env = document.createElement("div");
+        env.className = "floating-envelope";
+        env.style.setProperty("--dur", `${22 + Math.random() * 10}s`);
+        env.style.setProperty("--delay", `${-Math.random() * 18}s`);
+        env.style.setProperty("--y", `${8 + Math.random() * 80}%`);
+        env.title = "Поймай пожелание";
+        env.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const { clientX, clientY } = e;
+          showBurst(clientX, clientY);
+        });
+        floatingLayer.appendChild(env);
+      }
+    }
+
+    function showBurst(x, y) {
+      const msg = document.createElement("div");
+      msg.className = "burst-msg";
+      msg.textContent = MINI_WISHES[Math.floor(Math.random() * MINI_WISHES.length)];
+      msg.style.left = `${x}px`;
+      msg.style.top = `${y}px`;
+      document.body.appendChild(msg);
+      setTimeout(() => msg.remove(), 1500);
+    }
+
+    createFloatingEnvelopes(9);
+
+    // Hover hint for desktop
+    envelope.addEventListener("mouseenter", () => {
+      envelope.querySelector(".letter").style.transform = "translate(-50%, -60%)";
+    });
+    envelope.addEventListener("mouseleave", () => {
+      envelope.querySelector(".letter").style.transform = "";
+    });
+  </script>
+</body>
+</html>
